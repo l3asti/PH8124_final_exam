@@ -31,22 +31,15 @@ if [[ $n_SUBDIRS -ne 10 ]]; then
     echo "Data not complet or too many sub directories. Expected 10 sub directories, found $n_SUBDIRS." >&2
     exit 1
 fi
-for dir in "$TOPDIR"/*; do
-    if [ -d "$dir" ]; then
-        # check if HIJING_LBF_test_small.out exists in the subdirectory
-        if [ ! -e "$dir/HIJING_LBF_test_small.out" ]; then
-            echo "No HIJING_LBF_test_small.out found in $dir" >&2
-            exit 1
-        fi
 
-        # spliting of individual files
-        cd "$dir"
-        # echo "Processing directory: $dir"
+# procces all the HIJING_LBF_test_small.out files 
+while read File; do 
+    {
+        cd $(dirname "$File")
 
-
-        # gets the line number and the privious line number and prints it in a temp file
-        # after the file gets read and each line calls sed to spilit the file 
-        awk '
+        while read -r event start_line end_line; do # reads from the awk command and spits the files in singel events
+            sed -n "${start_line},${end_line}p" HIJING_LBF_test_small.out > "event_${event}.dat"
+        done< <(awk '
             /BEGINNINGOFEVENT/ {
                 if (prev != "")
                     print event, prev, NR 
@@ -58,12 +51,11 @@ for dir in "$TOPDIR"/*; do
                 if (prev != "")
                     print event, prev, NR
             }
-            ' HIJING_LBF_test_small.out |
-            while read -r event start_line end_line; do
-                sed -n "${start_line},${end_line}p" HIJING_LBF_test_small.out > "event_${event}.dat"
-            done
-    fi
+            ' HIJING_LBF_test_small.out) # gets the event number, start line and end line of each event and outputs it into stdin of the inner loop
+    } & # run the splitting of the file in the background 
 
-    # return to the starting directory
-    cd "$STARING_DIR"
-done
+    done < <(find "$TOPDIR" -type f -name "HIJING_LBF_test_small.out" -print) # find all HIJING_LBF_test_small.out files in the sup directories and output into the stdin of the loop
+    
+    wait # wait for all background processes to finish before continuing
+    
+cd "$STARING_DIR"
