@@ -29,4 +29,4 @@ printf "%-10s= %s GeV/c\n" "o protons" "${mean[2]}"
 
 cd "$STARING_DIR"
 
-exit 0
+return 0

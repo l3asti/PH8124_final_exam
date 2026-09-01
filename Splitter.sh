@@ -9,13 +9,13 @@ STARING_DIR=$(pwd)
 # check if at least one argument is provided
 if [ $# -ne 1 ]; then
     echo "Exectly one argument is required: the path to the top directory of the HIJING files." >&2
-    exit 1
+    return 1
 fi
 
 # check if provided path is a directory
 if [ ! -d "$TOPDIR" ]; then
     echo "The provided path is not a directory." >&2
-    exit 1
+    return 1
 fi
 
 
@@ -29,7 +29,7 @@ fi
 n_SUBDIRS=$(find "$TOPDIR" -mindepth 1 -maxdepth 1 -type d | wc -l)
 if [[ $n_SUBDIRS -ne 10 ]]; then
     echo "Data not complet or too many sub directories. Expected 10 sub directories, found $n_SUBDIRS." >&2
-    exit 1
+    return 1
 fi
 
 # procces all the HIJING_LBF_test_small.out files 
@@ -62,4 +62,4 @@ wait # wait for all background processes to finish before continuing
     
 cd "$STARING_DIR"
 
-exit 0
+return 0

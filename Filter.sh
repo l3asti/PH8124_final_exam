@@ -8,12 +8,12 @@ STARING_DIR=$(pwd)
 
 if [ $# -ne 1 ]; then
     echo "Exectly one argument is required: the path to the top directory of the HIJING files." >&2
-    exit 1
+    return 1
 fi
 
 if [ ! -d "$TOPDIR" ]; then
     echo "The provided path is not a directory." >&2
-    exit 1
+    return 1
 fi
 
 if [[ $TOPDIR == */ ]]; then
@@ -51,4 +51,4 @@ rm -r "$TOPDIR"/*/backup_*.dat # cleans up the backup files
 
 cd "$STARING_DIR"
 
-exit 0
+return 0

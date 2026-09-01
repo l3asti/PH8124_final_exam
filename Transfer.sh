@@ -7,12 +7,12 @@ STARING_DIR=$(pwd)
 
 if [ $# -ne 1 ]; then
     echo "Exectly one argument is required: the path to the top directory of the HIJING files." >&2
-    exit 1
+    return 1
 fi
 
 if [ ! -d "$TOPDIR" ]; then
     echo "The provided path is not a directory." >&2
-    exit 1
+    return 1
 fi
 
 if [[ $TOPDIR == */ ]]; then
@@ -38,4 +38,4 @@ find "$TOPDIR" -type f -name "event_*.dat" -delete # delete the event_*.dat file
 
 cd "$STARING_DIR"
 
-exit 0
+return 0
