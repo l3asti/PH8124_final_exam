@@ -4,10 +4,9 @@ TOPDIR=$(realpath $1)
 
 STARING_DIR=$(pwd)
 
-if [ -f "$TOPDIR/AnalysisResults.root" ]; then
-    rm "$TOPDIR"/AnalysisResults.root # delete existing AnalysisResults.root file to avoid appending to old data if exists
 
-fi
+rm -f "$TOPDIR"/AnalysisResults.root # delete existing AnalysisResults.root file to avoid appending to old data if exists
+
 
 
 while read file; do # loop over all HIJING_LBF_test_small.root files

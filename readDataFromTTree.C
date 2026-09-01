@@ -61,9 +61,10 @@ int readDataFromTTree(const char *filename, const char *TopDir)
   {
     tree->GetEntry(p);
 
+    // use the ROOT::Math::PxPyPzE4D Lorentzvectors to calculate the transverse momentum insted of std::sqrt(px*px + py*py) to avoid mistakes and #include <cmath>
     ROOT::Math::PxPyPzE4D<double> particle(px,py,pz,E); // make a Lorentz vector for the current particle
     Float_t pt = particle.Pt(); // get the transverse momentum of the particle
-    switch (abs(int(PID))) // sort for pi+, K+, p, and ist antipartical (not nutral version e.g. pi0, K0, n) and fill the corresponding histogram
+    switch (abs(int(PID))) // sort for pi+, K+, p, and ist antipartical (not neutral version e.g. pi0, K0, n) and fill the corresponding histogram
     {
         case 211: // pion
             h1[0]->Fill(pt); // fill the histogram for pions
