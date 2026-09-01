@@ -44,7 +44,7 @@ while read File; do
                 if (prev != "")
                     print event, prev, NR 
 
-                prev = NR + 1
+                prev = NR + 2
                 event++
             }
             END {
@@ -52,10 +52,14 @@ while read File; do
                     print event, prev, NR
             }
             ' HIJING_LBF_test_small.out) # gets the event number, start line and end line of each event and outputs it into stdin of the inner loop
+
     } & # run the splitting of the file in the background 
 
-    done < <(find "$TOPDIR" -type f -name "HIJING_LBF_test_small.out" -print) # find all HIJING_LBF_test_small.out files in the sup directories and output into the stdin of the loop
+
+done < <(find "$TOPDIR" -type f -name "HIJING_LBF_test_small.out" -print) # find all HIJING_LBF_test_small.out files in the sup directories and output into the stdin of the loop
     
-    wait # wait for all background processes to finish before continuing
+wait # wait for all background processes to finish before continuing
     
 cd "$STARING_DIR"
+
+exit 0
