@@ -8,8 +8,9 @@ int importASCIIfileIntoTTree(const char *filename, const char *Dir)
     TTree *tree = new TTree("event","data from ascii file"); // make the new TTree for each event
 
     Long64_t nlines = tree->ReadFile(filename,"PID:px:py:pz:E"); // whatever you specify here, will be relevant when you start later reading the TTree branches
-    tree->Write(); // save TTree to 'output.root' file
+    tree->Write(); // save TTree to output file
     file->Close();
+    
     
  return 0;   
 } 
